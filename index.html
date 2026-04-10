@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>경안 슈퍼 - 신선한 쇼핑 경험</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #2e7d32;
+      --green-light: #4caf50;
+      --green-pale: #e8f5e9;
+      --orange: #ff6f00;
+      --orange-light: #ffa000;
+      --gray: #f5f5f5;
+      --dark: #1a1a1a;
+      --text: #333;
+      --muted: #888;
+      --white: #fff;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --radius: 14px;
+    }
+
+    body { font-family: 'Segoe UI', sans-serif; color: var(--text); background: #fafafa; }
+
+    /* ───── HEADER ───── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--white);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .header-top {
+      background: var(--green);
+      color: var(--white);
+      font-size: 13px;
+      text-align: center;
+      padding: 6px;
+    }
+    .header-main {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 40px; gap: 20px;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo-icon { font-size: 44px; }
+    .logo-text { font-size: 34px; font-weight: 900; color: #1565c0; }
+    .logo-text span { color: #1e88e5; }
+
+    .search-bar {
+      flex: 1; max-width: 520px;
+      display: flex; border: 2px solid var(--green-light); border-radius: 30px; overflow: hidden;
+    }
+    .search-bar input {
+      flex: 1; padding: 10px 18px; border: none; outline: none; font-size: 14px;
+    }
+    .search-bar button {
+      background: var(--green-light); color: var(--white);
+      border: none; padding: 10px 20px; cursor: pointer; font-size: 16px;
+      transition: background .2s;
+    }
+    .search-bar button:hover { background: var(--green); }
+
+    .header-actions { display: flex; align-items: center; gap: 18px; }
+    .header-actions a {
+      text-decoration: none; color: var(--text); font-size: 13px;
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+    }
+    .header-actions a .icon { font-size: 22px; }
+    .cart-btn {
+      position: relative; background: var(--orange); color: var(--white) !important;
+      border-radius: 12px; padding: 8px 16px !important;
+      flex-direction: row !important; gap: 8px !important;
+      font-weight: 600; font-size: 14px !important;
+      cursor: pointer; border: none;
+    }
+    .cart-count {
+      background: var(--white); color: var(--orange);
+      border-radius: 50%; width: 20px; height: 20px;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ───── NAV ───── */
+    nav {
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; padding: 0 40px;
+    }
+    nav a {
+      color: var(--white); text-decoration: none;
+      padding: 12px 20px; font-size: 14px; font-weight: 500;
+      transition: background .2s;
+    }
+    nav a:hover, nav a.active { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+    /* ───── HERO ───── */
+    .hero {
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #388e3c 100%);
+      color: var(--white); padding: 70px 40px;
+      display: flex; align-items: center; justify-content: space-between; gap: 40px;
+      min-height: 440px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='30'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-content { max-width: 520px; position: relative; }
+    .hero-badge {
+      display: inline-block; background: var(--orange); color: var(--white);
+      padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+      margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .hero h1 { font-size: 46px; font-weight: 900; line-height: 1.15; margin-bottom: 18px; }
+    .hero h1 span { color: #a5d6a7; }
+    .hero p { font-size: 17px; opacity: .85; margin-bottom: 32px; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--orange); color: var(--white);
+      padding: 14px 30px; border-radius: 30px; font-size: 15px; font-weight: 700;
+      border: none; cursor: pointer; text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,111,0,.4); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      padding: 14px 30px; border-radius: 30px; font-size: 15px; font-weight: 700;
+      border: 2px solid rgba(255,255,255,.5); cursor: pointer; text-decoration: none;
+      transition: border-color .2s, background .2s;
+      display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,.1); }
+    .hero-visual {
+      font-size: 160px; position: relative; z-index: 1;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+    .hero-stats {
+      position: absolute; bottom: 30px; left: 40px;
+      display: flex; gap: 40px;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-size: 28px; font-weight: 900; }
+    .hero-stat .label { font-size: 12px; opacity: .7; }
+
+    /* ───── CATEGORIES ───── */
+    .section { padding: 60px 40px; }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .section-title { font-size: 26px; font-weight: 800; }
+    .section-title span { color: var(--green); }
+    .see-all {
+      color: var(--green); text-decoration: none; font-size: 14px; font-weight: 600;
+      border: 1px solid var(--green); padding: 6px 16px; border-radius: 20px;
+      transition: background .2s, color .2s;
+    }
+    .see-all:hover { background: var(--green); color: var(--white); }
+
+    .categories-grid {
+      display: grid; grid-template-columns: repeat(8, 1fr); gap: 16px;
+    }
+    .category-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 20px 10px; text-align: center; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: var(--shadow); border: 2px solid transparent;
+    }
+    .category-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); border-color: var(--green-light); }
+    .category-card.active { border-color: var(--green); background: var(--green-pale); }
+    .category-card .emoji { font-size: 38px; margin-bottom: 8px; display: block; }
+    .category-card .name { font-size: 12px; font-weight: 600; color: var(--text); }
+
+    /* ───── BANNER ───── */
+    .banners { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 40px 40px; }
+    .banner {
+      border-radius: 18px; padding: 28px 32px; color: var(--white); position: relative; overflow: hidden;
+    }
+    .banner-1 { background: linear-gradient(135deg, #e65100, #ff6f00); }
+    .banner-2 { background: linear-gradient(135deg, #1565c0, #1976d2); }
+    .banner .big { font-size: 36px; }
+    .banner h3 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .banner p { font-size: 13px; opacity: .85; margin-bottom: 16px; }
+    .btn-white {
+      background: var(--white); color: var(--dark);
+      padding: 9px 22px; border-radius: 20px; font-size: 13px; font-weight: 700;
+      border: none; cursor: pointer; text-decoration: none; display: inline-block;
+      transition: transform .2s;
+    }
+    .btn-white:hover { transform: translateY(-2px); }
+    .banner .deco { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 80px; opacity: .2; }
+
+    /* ───── PRODUCTS ───── */
+    .products-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px;
+    }
+    .product-card {
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: hidden;
+      transition: transform .2s, box-shadow .2s; position: relative;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
+    .product-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      background: var(--orange); color: var(--white);
+      padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;
+    }
+    .product-badge.new { background: var(--green); }
+    .product-badge.best { background: #7b1fa2; }
+    .product-img {
+      height: 180px; display: flex; align-items: center; justify-content: center;
+      font-size: 80px; background: var(--gray); cursor: pointer;
+    }
+    .product-body { padding: 16px; }
+    .product-tag { font-size: 11px; color: var(--green); font-weight: 600; margin-bottom: 4px; }
+    .product-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; }
+    .product-desc { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+    .product-rating { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; }
+    .stars { color: #ffc107; font-size: 13px; }
+    .rating-count { font-size: 12px; color: var(--muted); }
+    .product-price-row { display: flex; align-items: center; justify-content: space-between; }
+    .product-price { font-size: 20px; font-weight: 900; color: var(--green); }
+    .product-original { font-size: 13px; color: var(--muted); text-decoration: line-through; }
+    .add-to-cart {
+      background: var(--green); color: var(--white);
+      border: none; border-radius: 10px; padding: 9px 14px; cursor: pointer;
+      font-size: 18px; transition: background .2s, transform .15s;
+    }
+    .add-to-cart:hover { background: var(--green-light); transform: scale(1.1); }
+    .add-to-cart.added { background: var(--orange); }
+
+    /* ───── FEATURES ───── */
+    .features {
+      background: var(--green-pale);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; border-top: 2px solid #c8e6c9; border-bottom: 2px solid #c8e6c9;
+    }
+    .feature {
+      display: flex; align-items: center; gap: 14px;
+      padding: 28px 30px; border-right: 2px solid #c8e6c9;
+    }
+    .feature:last-child { border-right: none; }
+    .feature .icon { font-size: 36px; }
+    .feature-text .title { font-size: 14px; font-weight: 700; color: var(--green); }
+    .feature-text .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* ───── TESTIMONIALS ───── */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .testimonial {
+      background: var(--white); border-radius: var(--radius); padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .testimonial .quote { font-size: 32px; color: var(--green-light); line-height: 1; margin-bottom: 8px; }
+    .testimonial p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; background: var(--green-pale); }
+    .author-name { font-weight: 700; font-size: 14px; }
+    .author-sub { font-size: 12px; color: var(--muted); }
+
+    /* ───── FOOTER ───── */
+    footer { background: #1a1a1a; color: #aaa; margin-top: 60px; }
+    .footer-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding: 50px 40px 30px; }
+    .footer-brand .logo-text { font-size: 24px; font-weight: 800; color: var(--white); }
+    .footer-brand p { font-size: 13px; line-height: 1.8; margin-top: 12px; margin-bottom: 20px; }
+    .socials { display: flex; gap: 10px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 8px; background: #333;
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+      cursor: pointer; transition: background .2s;
+    }
+    .social-btn:hover { background: var(--green); }
+    .footer-col h4 { color: var(--white); font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a { color: #888; text-decoration: none; font-size: 13px; transition: color .2s; }
+    .footer-col ul li a:hover { color: var(--green-light); }
+    .footer-bottom { border-top: 1px solid #333; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+    .payment-icons { display: flex; gap: 8px; font-size: 22px; }
+
+    /* ───── CART SIDEBAR ───── */
+    .cart-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      z-index: 200; opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-sidebar {
+      position: fixed; right: -420px; top: 0; bottom: 0; width: 420px;
+      background: var(--white); z-index: 300; transition: right .35s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column; box-shadow: -4px 0 30px rgba(0,0,0,.15);
+    }
+    .cart-sidebar.open { right: 0; }
+    .cart-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 24px; border-bottom: 2px solid var(--gray);
+    }
+    .cart-header h2 { font-size: 20px; font-weight: 800; }
+    .close-cart { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); }
+    .close-cart:hover { color: var(--dark); }
+    .cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+    .cart-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .cart-empty .icon { font-size: 60px; margin-bottom: 16px; }
+    .cart-item {
+      display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--gray);
+    }
+    .cart-item-img { font-size: 42px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background: var(--gray); border-radius: 10px; flex-shrink: 0; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .cart-item-price { font-size: 15px; font-weight: 800; color: var(--green); }
+    .cart-item-qty { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .qty-btn {
+      width: 26px; height: 26px; border-radius: 6px; border: 1px solid #ddd;
+      background: var(--white); cursor: pointer; font-size: 16px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; transition: background .2s;
+    }
+    .qty-btn:hover { background: var(--green-pale); }
+    .qty-num { font-size: 14px; font-weight: 700; min-width: 20px; text-align: center; }
+    .remove-item { background: none; border: none; cursor: pointer; color: #ccc; font-size: 18px; align-self: flex-start; }
+    .remove-item:hover { color: #e53935; }
+    .cart-footer { padding: 20px 24px; border-top: 2px solid var(--gray); }
+    .cart-summary { margin-bottom: 16px; }
+    .cart-summary .row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
+    .cart-summary .total { font-size: 18px; font-weight: 800; border-top: 2px solid var(--gray); padding-top: 10px; margin-top: 6px; }
+    .checkout-btn {
+      width: 100%; background: var(--green); color: var(--white);
+      border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background .2s;
+    }
+    .checkout-btn:hover { background: var(--green-light); }
+
+    /* ───── TOAST ───── */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--dark); color: var(--white);
+      padding: 12px 24px; border-radius: 30px; font-size: 14px; font-weight: 600;
+      z-index: 500; transition: transform .3s cubic-bezier(.4,0,.2,1); pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ───── RESPONSIVE ───── */
+    @media (max-width: 1100px) {
+      .products-grid { grid-template-columns: repeat(3, 1fr); }
+      .categories-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 800px) {
+      .header-main { padding: 12px 16px; }
+      .section { padding: 40px 16px; }
+      .hero { padding: 40px 16px; flex-direction: column; text-align: center; }
+      .hero h1 { font-size: 30px; }
+      .hero-visual { font-size: 90px; }
+      .hero-stats { position: static; justify-content: center; margin-top: 20px; }
+      .categories-grid { grid-template-columns: repeat(4, 1fr); }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .features { grid-template-columns: repeat(2, 1fr); }
+      .banners { grid-template-columns: 1fr; padding: 0 16px 30px; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .footer-main { grid-template-columns: 1fr 1fr; }
+      .cart-sidebar { width: 100%; right: -100%; }
+      nav { overflow-x: auto; justify-content: flex-start; padding: 0 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">🚀 3만원 이상 구매 시 무료배송 | 오늘 주문하면 내일 도착!</div>
+  <div class="header-main">
+    <a href="#" class="logo">
+      <span class="logo-icon">🛒</span>
+      <span class="logo-text">경안<span>슈퍼</span></span>
+    </a>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="상품을 검색해보세요... (예: 사과, 우유, 닭가슴살)" />
+      <button onclick="handleSearch()">🔍</button>
+    </div>
+    <div class="header-actions">
+      <a href="#"><span class="icon">❤️</span><span>위시리스트</span></a>
+      <a href="#"><span class="icon">👤</span><span>로그인</span></a>
+      <button class="cart-btn" onclick="toggleCart()">
+        🛒 장바구니
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="active" onclick="filterCategory('all')">전체</a>
+  <a href="#" onclick="filterCategory('fresh')">🥬 신선식품</a>
+  <a href="#" onclick="filterCategory('fruit')">🍎 과일</a>
+  <a href="#" onclick="filterCategory('meat')">🥩 육류/수산</a>
+  <a href="#" onclick="filterCategory('dairy')">🥛 유제품</a>
+  <a href="#" onclick="filterCategory('bakery')">🍞 베이커리</a>
+  <a href="#" onclick="filterCategory('snack')">🍿 과자/음료</a>
+  <a href="#" onclick="filterCategory('eco')">🌿 건강/유기농</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🔥 오늘의 특가</div>
+    <h1>신선함을 <span>배달</span>해드립니다</h1>
+    <p>국내 최고의 신선식품을 합리적인 가격에!<br/>매일 아침 새벽에 직접 수확한 농산물을 당일 배송합니다.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">지금 쇼핑하기</a>
+      <a href="#" class="btn-outline">특가 상품 보기</a>
+    </div>
+  </div>
+  <div class="hero-visual">🛒</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">10K+</div><div class="label">상품 종류</div></div>
+    <div class="hero-stat"><div class="num">500K+</div><div class="label">고객 수</div></div>
+    <div class="hero-stat"><div class="num">4.9★</div><div class="label">평균 평점</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="feature"><span class="icon">🚚</span><div class="feature-text"><div class="title">무료 배송</div><div class="sub">3만원 이상 구매 시</div></div></div>
+  <div class="feature"><span class="icon">🕐</span><div class="feature-text"><div class="title">당일 배송</div><div class="sub">오전 11시 이전 주문</div></div></div>
+  <div class="feature"><span class="icon">🌿</span><div class="feature-text"><div class="title">신선 보장</div><div class="sub">100% 신선도 보장</div></div></div>
+  <div class="feature"><span class="icon">🔄</span><div class="feature-text"><div class="title">간편 반품</div><div class="sub">7일 이내 무조건 환불</div></div></div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section" id="categories">
+  <div class="section-header">
+    <h2 class="section-title">카테고리 <span>탐색</span></h2>
+    <a href="#" class="see-all">전체 보기</a>
+  </div>
+  <div class="categories-grid">
+    <div class="category-card active" onclick="filterCategory('all')"><span class="emoji">🛒</span><span class="name">전체</span></div>
+    <div class="category-card" onclick="filterCategory('fresh')"><span class="emoji">🥬</span><span class="name">신선식품</span></div>
+    <div class="category-card" onclick="filterCategory('fruit')"><span class="emoji">🍎</span><span class="name">과일</span></div>
+    <div class="category-card" onclick="filterCategory('meat')"><span class="emoji">🥩</span><span class="name">육류/수산</span></div>
+    <div class="category-card" onclick="filterCategory('dairy')"><span class="emoji">🥛</span><span class="name">유제품</span></div>
+    <div class="category-card" onclick="filterCategory('bakery')"><span class="emoji">🍞</span><span class="name">베이커리</span></div>
+    <div class="category-card" onclick="filterCategory('snack')"><span class="emoji">🍿</span><span class="name">과자/음료</span></div>
+    <div class="category-card" onclick="filterCategory('eco')"><span class="emoji">🌿</span><span class="name">건강식품</span></div>
+  </div>
+</section>
+
+<!-- BANNERS -->
+<div class="banners">
+  <div class="banner banner-1">
+    <p class="big">🔥</p>
+    <h3>주말 특가 세일</h3>
+    <p>선택 상품 최대 50% 할인! 이번 주말만 진행되는 특별 이벤트</p>
+    <a href="#products" class="btn-white">지금 확인하기</a>
+    <span class="deco">%</span>
+  </div>
+  <div class="banner banner-2">
+    <p class="big">🌿</p>
+    <h3>유기농 신상품 입고</h3>
+    <p>친환경 인증 유기농 제품이 새로 들어왔습니다!</p>
+    <a href="#products" class="btn-white">상품 보러가기</a>
+    <span class="deco">♻</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="section" id="products">
+  <div class="section-header">
+    <h2 class="section-title">인기 <span>상품</span></h2>
+    <a href="#" class="see-all">더 보기</a>
+  </div>
+  <div class="products-grid" id="productsGrid">
+    <!-- JS로 렌더링 -->
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" style="background: var(--gray);">
+  <div class="section-header">
+    <h2 class="section-title">고객 <span>후기</span></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="quote">"</div>
+      <p>매일 아침 신선한 채소를 배달받으니 너무 편해요! 품질도 마트에서 직접 고른 것처럼 신선하고 가격도 합리적입니다.</p>
+      <div class="testimonial-author">
+        <div class="avatar">👩</div>
+        <div><div class="author-name">김지은</div><div class="author-sub">⭐⭐⭐⭐⭐ | 2년 이용 중</div></div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="quote">"</div>
+      <p>당일 배송이 정말 빠르고 포장도 꼼꼼해요. 생선이나 육류도 냉장 포장이 완벽해서 신뢰가 갑니다!</p>
+      <div class="testimonial-author">
+        <div class="avatar">👨</div>
+        <div><div class="author-name">박민준</div><div class="author-sub">⭐⭐⭐⭐⭐ | 1년 이용 중</div></div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="quote">"</div>
+      <p>유기농 코너가 다양해서 좋아요. 아이들 먹거리를 안심하고 구매할 수 있고, 정기 구독으로 할인도 받고 있어요.</p>
+      <div class="testimonial-author">
+        <div class="avatar">👩‍👧</div>
+        <div><div class="author-name">이수연</div><div class="author-sub">⭐⭐⭐⭐⭐ | 3년 이용 중</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="logo-text">경안<span style="color:var(--orange)">슈퍼</span></div>
+      <p>매일 새벽 4시, 전국 농가에서 직접 수확한<br/>신선한 식재료를 여러분의 식탁에 전달합니다.</p>
+      <div class="socials">
+        <div class="social-btn">📘</div>
+        <div class="social-btn">📸</div>
+        <div class="social-btn">🐦</div>
+        <div class="social-btn">▶️</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>경안 슈퍼</h4>
+      <ul>
+        <li><a href="#">회사 소개</a></li>
+        <li><a href="#">입점 안내</a></li>
+        <li><a href="#">채용 공고</a></li>
+        <li><a href="#">보도 자료</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>고객 서비스</h4>
+      <ul>
+        <li><a href="#">자주 묻는 질문</a></li>
+        <li><a href="#">배송 안내</a></li>
+        <li><a href="#">교환/반품</a></li>
+        <li><a href="#">1:1 문의</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>고객센터</h4>
+      <ul>
+        <li><a href="#">📞 1588-1234</a></li>
+        <li><a href="#">평일 9:00 - 18:00</a></li>
+        <li><a href="#">주말 10:00 - 17:00</a></li>
+        <li><a href="#">카카오 채널</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 경안 슈퍼. All rights reserved.</span>
+    <div class="payment-icons">💳 🏦 📱 💰</div>
+  </div>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>🛒 장바구니</h2>
+    <button class="close-cart" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-summary">
+      <div class="row"><span>상품 금액</span><span id="subtotal">0원</span></div>
+      <div class="row"><span>배송비</span><span id="shippingFee">3,000원</span></div>
+      <div class="row total"><span>총 결제 금액</span><span id="totalPrice" style="color:var(--green)">0원</span></div>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">결제하기 →</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ─── DATA ───
+  const allProducts = [
+    { id:1, name:'제주 감귤 2kg', desc:'당도 높은 제주산 노지 감귤', price:12900, original:18000, emoji:'🍊', category:'fruit', rating:4.8, reviews:342, badge:'SALE' },
+    { id:2, name:'유기농 대추 방울토마토', desc:'농약 없이 키운 달콤한 토마토', price:8900, original:11000, emoji:'🍅', category:'fresh', rating:4.9, reviews:218, badge:'NEW' },
+    { id:3, name:'한우 1++ 등심 500g', desc:'최고급 1등급 한우 등심', price:59900, original:75000, emoji:'🥩', category:'meat', rating:4.7, reviews:98, badge:'BEST' },
+    { id:4, name:'신선 우유 1L x 2개', desc:'매일 새벽 착유한 신선 우유', price:5800, original:7200, emoji:'🥛', category:'dairy', rating:4.6, reviews:521 },
+    { id:5, name:'샤인머스켓 포도 1kg', desc:'씨 없는 달콤한 샤인머스켓', price:22000, original:28000, emoji:'🍇', category:'fruit', rating:4.9, reviews:187, badge:'SALE' },
+    { id:6, name:'천연 밀 식빵', desc:'국산 밀로 만든 폭신한 식빵', price:4500, original:5500, emoji:'🍞', category:'bakery', rating:4.5, reviews:290 },
+    { id:7, name:'연어 필렛 200g', desc:'노르웨이산 생 연어 필렛', price:18900, original:23000, emoji:'🐟', category:'meat', rating:4.8, reviews:156, badge:'NEW' },
+    { id:8, name:'유기농 달걀 15구', desc:'방목 사육 무항생제 달걀', price:6900, original:8500, emoji:'🥚', category:'eco', rating:4.7, reviews:403 },
+    { id:9, name:'아이스 아메리카노 캔', desc:'진한 원두 아이스 커피 8캔', price:9900, original:12000, emoji:'☕', category:'snack', rating:4.4, reviews:267 },
+    { id:10, name:'국내산 블루베리 400g', desc:'신선한 국산 블루베리', price:11900, original:15000, emoji:'🫐', category:'fruit', rating:4.8, reviews:134, badge:'BEST' },
+    { id:11, name:'유기농 케일 한단', desc:'면역력 UP 유기농 케일', price:3900, original:5000, emoji:'🥬', category:'eco', rating:4.6, reviews:89 },
+    { id:12, name:'수제 요거트 500g', desc:'유산균 가득 무가당 요거트', price:7800, original:9500, emoji:'🧁', category:'dairy', rating:4.7, reviews:312 },
+  ];
+
+  let cart = [];
+  let currentCategory = 'all';
+
+  // ─── RENDER PRODUCTS ───
+  function renderProducts(products) {
+    const grid = document.getElementById('productsGrid');
+    if (products.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
+        <div style="font-size:60px;margin-bottom:16px">😔</div>
+        <div style="font-size:18px;font-weight:700">검색 결과가 없습니다</div>
+      </div>`;
+      return;
+    }
+    grid.innerHTML = products.map(p => {
+      const discount = p.original ? Math.round((1 - p.price / p.original) * 100) : 0;
+      const badgeColor = p.badge === 'NEW' ? 'new' : p.badge === 'BEST' ? 'best' : '';
+      return `
+        <div class="product-card" data-id="${p.id}">
+          ${p.badge ? `<span class="product-badge ${badgeColor}">${p.badge}${discount ? ' -'+discount+'%' : ''}</span>` : ''}
+          <div class="product-img" onclick="quickView(${p.id})">${p.emoji}</div>
+          <div class="product-body">
+            <div class="product-tag">${categoryLabel(p.category)}</div>
+            <div class="product-name">${p.name}</div>
+            <div class="product-desc">${p.desc}</div>
+            <div class="product-rating">
+              <span class="stars">${'★'.repeat(Math.floor(p.rating))}${'☆'.repeat(5-Math.floor(p.rating))}</span>
+              <span class="rating-count">${p.rating} (${p.reviews.toLocaleString()})</span>
+            </div>
+            <div class="product-price-row">
+              <div>
+                <div class="product-price">${p.price.toLocaleString()}원</div>
+                ${p.original ? `<div class="product-original">${p.original.toLocaleString()}원</div>` : ''}
+              </div>
+              <button class="add-to-cart" onclick="addToCart(${p.id})" id="btn-${p.id}">+</button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function categoryLabel(cat) {
+    const map = { all:'전체', fresh:'신선식품', fruit:'과일', meat:'육류/수산', dairy:'유제품', bakery:'베이커리', snack:'과자/음료', eco:'건강/유기농' };
+    return map[cat] || cat;
+  }
+
+  // ─── FILTER ───
+  function filterCategory(cat) {
+    currentCategory = cat;
+    document.querySelectorAll('.category-card').forEach((el, i) => {
+      el.classList.toggle('active', ['all','fresh','fruit','meat','dairy','bakery','snack','eco'][i] === cat);
+    });
+    const filtered = cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat);
+    renderProducts(filtered);
+  }
+
+  // ─── SEARCH ───
+  function handleSearch() {
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    const filtered = q
+      ? allProducts.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || categoryLabel(p.category).includes(q))
+      : (currentCategory === 'all' ? allProducts : allProducts.filter(p => p.category === currentCategory));
+    renderProducts(filtered);
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleSearch(); });
+
+  // ─── CART ───
+  function addToCart(id) {
+    const product = allProducts.find(p => p.id === id);
+    const existing = cart.find(c => c.id === id);
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ ...product, qty: 1 });
+    }
+    updateCartUI();
+    showToast(`🛒 "${product.name}" 장바구니에 추가!`);
+    const btn = document.getElementById('btn-' + id);
+    if (btn) { btn.textContent = '✓'; btn.classList.add('added'); setTimeout(() => { btn.textContent = '+'; btn.classList.remove('added'); }, 1500); }
+  }
+
+  function updateCartUI() {
+    const count = cart.reduce((s, c) => s + c.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+    const itemsEl = document.getElementById('cartItems');
+    const footer = document.getElementById('cartFooter');
+    if (cart.length === 0) {
+      itemsEl.innerHTML = `<div class="cart-empty"><div class="icon">🛒</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">장바구니가 비어있어요</div><div style="font-size:13px">상품을 추가해보세요!</div></div>`;
+      footer.style.display = 'none';
+    } else {
+      itemsEl.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-img">${item.emoji}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">${(item.price * item.qty).toLocaleString()}원</div>
+            <div class="cart-item-qty">
+              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+              <span class="qty-num">${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+          </div>
+          <button class="remove-item" onclick="removeItem(${item.id})">✕</button>
+        </div>`).join('');
+      const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
+      const shipping = subtotal >= 30000 ? 0 : 3000;
+      const total = subtotal + shipping;
+      document.getElementById('subtotal').textContent = subtotal.toLocaleString() + '원';
+      document.getElementById('shippingFee').textContent = shipping === 0 ? '무료' : shipping.toLocaleString() + '원';
+      document.getElementById('totalPrice').textContent = total.toLocaleString() + '원';
+      footer.style.display = 'block';
+    }
+  }
+
+  function changeQty(id, delta) {
+    const item = cart.find(c => c.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) removeItem(id);
+    else updateCartUI();
+  }
+
+  function removeItem(id) {
+    cart = cart.filter(c => c.id !== id);
+    updateCartUI();
+  }
+
+  function toggleCart() {
+    document.getElementById('cartSidebar').classList.toggle('open');
+    document.getElementById('cartOverlay').classList.toggle('open');
+  }
+
+  function checkout() {
+    showToast('✅ 결제 페이지로 이동합니다!');
+    setTimeout(() => { toggleCart(); }, 800);
+  }
+
+  // ─── QUICK VIEW ───
+  function quickView(id) {
+    const p = allProducts.find(x => x.id === id);
+    showToast(`👀 ${p.emoji} ${p.name} - ${p.price.toLocaleString()}원`);
+  }
+
+  // ─── TOAST ───
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ─── INIT ───
+  renderProducts(allProducts);
+  updateCartUI();
+</script>
+</body>
+</html>
