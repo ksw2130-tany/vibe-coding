@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIBE SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="container nav-wrap">
+      <h1 class="logo">VIBE SHOP</h1>
+      <nav class="menu">
+        <a href="#products">상품</a>
+        <a href="#about">소개</a>
+        <a href="#contact">문의</a>
+      </nav>
+      <button class="cart-btn" id="openCartBtn" aria-label="장바구니 열기">
+        장바구니 <span id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-content">
+        <div>
+          <p class="hero-badge">모바일 최적화 쇼핑</p>
+          <h2>지금 가장 인기 있는 아이템</h2>
+          <p class="hero-desc">
+            깔끔한 UI, 빠른 장바구니 동작, 모바일 반응형까지 한 번에.
+            원하는 상품을 담고 바로 구매 준비를 해보세요.
+          </p>
+          <a class="hero-cta" href="#products">상품 보러가기</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="products-section">
+      <div class="container">
+        <div class="section-head">
+          <h3>추천 상품</h3>
+          <p>클릭 한 번으로 장바구니에 담을 수 있어요.</p>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+          <article class="card" data-id="1" data-name="무선 이어버드" data-price="79000">
+            <div class="thumb">EARBUDS</div>
+            <h4>무선 이어버드</h4>
+            <p class="price">79,000원</p>
+            <button class="add-btn">장바구니 담기</button>
+          </article>
+
+          <article class="card" data-id="2" data-name="미니 블루투스 스피커" data-price="59000">
+            <div class="thumb">SPEAKER</div>
+            <h4>미니 블루투스 스피커</h4>
+            <p class="price">59,000원</p>
+            <button class="add-btn">장바구니 담기</button>
+          </article>
+
+          <article class="card" data-id="3" data-name="스마트 워치" data-price="129000">
+            <div class="thumb">WATCH</div>
+            <h4>스마트 워치</h4>
+            <p class="price">129,000원</p>
+            <button class="add-btn">장바구니 담기</button>
+          </article>
+
+          <article class="card" data-id="4" data-name="노트북 파우치" data-price="34000">
+            <div class="thumb">POUCH</div>
+            <h4>노트북 파우치</h4>
+            <p class="price">34,000원</p>
+            <button class="add-btn">장바구니 담기</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="info-section">
+      <div class="container info-grid">
+        <div>
+          <h3>왜 VIBE SHOP인가요?</h3>
+          <p>모바일에서 보기 편한 구조와 빠른 인터랙션을 최우선으로 설계했습니다.</p>
+        </div>
+        <div>
+          <h3>빠른 배송</h3>
+          <p>오후 2시 이전 결제 시 당일 출고됩니다.</p>
+        </div>
+        <div id="contact">
+          <h3>고객센터</h3>
+          <p>평일 10:00 - 18:00 / hello@vibeshop.test</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true">
+    <div class="cart-header">
+      <h3>장바구니</h3>
+      <button id="closeCartBtn" class="close-btn" aria-label="장바구니 닫기">✕</button>
+    </div>
+    <ul id="cartItems" class="cart-items"></ul>
+    <div class="cart-footer">
+      <p>총 합계 <strong id="cartTotal">0원</strong></p>
+      <button class="checkout-btn">결제하기</button>
+    </div>
+  </aside>
+  <div class="backdrop" id="backdrop"></div>
+
+  <script src="main.js"></script>
+</body>
+</html>
